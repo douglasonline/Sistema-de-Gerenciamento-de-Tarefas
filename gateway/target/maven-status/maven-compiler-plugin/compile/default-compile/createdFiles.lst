@@ -1,1 +1,5 @@
+com\example\gateway\service\JwtUtil.class
 com\example\gateway\GatewayApplication.class
+com\example\gateway\security\UserAuthenticationGatewayFilterFactory$Config$ConfigBuilder.class
+com\example\gateway\security\UserAuthenticationGatewayFilterFactory.class
+com\example\gateway\security\UserAuthenticationGatewayFilterFactory$Config.class

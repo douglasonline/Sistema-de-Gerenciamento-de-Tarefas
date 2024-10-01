@@ -1,0 +1,3 @@
+com\example\Notification\model\RabbitMQConsumer.class
+com\example\Notification\configuration\RabbitMQConfig.class
+com\example\Notification\NotificationApplication.class
