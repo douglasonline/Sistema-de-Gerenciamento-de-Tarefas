@@ -1,0 +1,45 @@
+global:
+  scrape_interval: 15s  # Intervalo de scraping, o padrão é 15 segundos
+
+scrape_configs:
+  # Scrape configuration for Eureka Server
+  - job_name: 'eureka-server'
+    static_configs:
+      - targets: ['eureka:8761']
+
+  # Scrape configuration for API Gateway
+  - job_name: 'api-gateway'
+    static_configs:
+      - targets: ['api-gateway:9999']
+
+  # Scrape configuration for user-service
+  - job_name: 'user-service'
+    dns_sd_configs:
+      - names:
+          - 'tasks.user-service'
+        type: 'A'
+        port: 8080  # Porta padrão para microm serviços Spring Boot expostos
+
+  # Scrape configuration for project-service
+  - job_name: 'project-service'
+    dns_sd_configs:
+      - names:
+          - 'tasks.project-service'
+        type: 'A'
+        port: 8080
+
+  # Scrape configuration for task-service
+  - job_name: 'task-service'
+    dns_sd_configs:
+      - names:
+          - 'tasks.task-service'
+        type: 'A'
+        port: 8080
+
+  # Scrape configuration for notification-service
+  - job_name: 'notification-service'
+    dns_sd_configs:
+      - names:
+          - 'tasks.notification-service'
+        type: 'A'
+        port: 8080

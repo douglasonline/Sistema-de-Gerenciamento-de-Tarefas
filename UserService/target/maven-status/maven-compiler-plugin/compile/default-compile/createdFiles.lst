@@ -1,0 +1,15 @@
+com\example\UserService\service\UserService.class
+com\example\UserService\controller\UserController.class
+com\example\UserService\config\WebSecurityConfig.class
+com\example\UserService\service\JwtService.class
+com\example\UserService\exception\UserAlreadyExistsException.class
+com\example\UserService\model\User$UserBuilder.class
+com\example\UserService\config\JwtAuthenticationFilter.class
+com\example\UserService\payload\ResponsePayload.class
+com\example\UserService\repository\UserRepository.class
+com\example\UserService\service\AuthService.class
+com\example\UserService\model\Role.class
+com\example\UserService\UserServiceApplication.class
+com\example\UserService\payload\LoginRequest.class
+com\example\UserService\exception\UserNotFoundException.class
+com\example\UserService\model\User.class

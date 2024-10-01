@@ -1,0 +1,146 @@
+version: '3.8'
+
+services:
+  eureka:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: eureka-build
+    ports:
+      - "8761:8761"
+    networks:
+      - task_management_network
+
+  config-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: config-build
+    networks:
+      - task_management_network
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: gateway-build
+    ports:
+      - "9999:9999"
+    networks:
+      - task_management_network
+
+  user-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: user-service-build
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_user_service:3306/dbTaskManagement
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+    networks:
+      - task_management_network
+
+  project-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: project-service-build
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_project_service:3306/dbTaskManagement
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+    networks:
+      - task_management_network
+
+  task-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: task-service-build
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_task_service:3306/dbTaskManagement
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+    networks:
+      - task_management_network
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: notification-service-build
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_notification_service:3306/dbTaskManagement
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+    networks:
+      - task_management_network
+
+  mysql_user_service:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_DATABASE: dbTaskManagement
+    networks:
+      - task_management_network
+
+  mysql_project_service:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_DATABASE: dbTaskManagement
+    networks:
+      - task_management_network
+
+  mysql_task_service:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_DATABASE: dbTaskManagement
+    networks:
+      - task_management_network
+
+  mysql_notification_service:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_DATABASE: dbTaskManagement
+    networks:
+      - task_management_network
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"  # Porta para comunicação com RabbitMQ
+      - "15672:15672"  # Porta para a interface de gerenciamento do RabbitMQ
+    networks:
+      - task_management_network
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - task_management_network
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - task_management_network
+
+networks:
+  task_management_network:
+    driver: bridge

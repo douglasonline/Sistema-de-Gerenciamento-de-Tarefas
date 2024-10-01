@@ -1,0 +1,11 @@
+com\example\ProjectService\service\impl\ProjectServiceImpl.class
+com\example\ProjectService\service\clients\UserClient.class
+com\example\ProjectService\model\Role.class
+com\example\ProjectService\service\UserService.class
+com\example\ProjectService\exception\UserNotFoundException.class
+com\example\ProjectService\repository\ProjectRepository.class
+com\example\ProjectService\ProjectServiceApplication.class
+com\example\ProjectService\model\Project.class
+com\example\ProjectService\controller\ProjectController.class
+com\example\ProjectService\service\ProjectService.class
+com\example\ProjectService\model\User.class
