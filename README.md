@@ -168,6 +168,25 @@ Utilizamos o endereço
 
 ![Cadastrando ProjectService](https://github.com/douglasonline/Imagens/blob/master/Cadastrando_ProjectService.png)
 
+- Para cadastra uma Tarefa no TaskService devemos passar o Token para isso
+Utilizamos o endereço
+- http://localhost:9999/TaskService/create
+
+![Cadastrar TaskService](https://github.com/douglasonline/Imagens/blob/master/Cadastrar_TaskService.png)
+
+![Cadastrando TaskService](https://github.com/douglasonline/Imagens/blob/master/Cadastrando_TaskService.png)
+
+- Para atualizar uma Tarefa no TaskService devemos passar o id da Tarefa é o Token para isso
+Utilizamos o endereço
+- http://localhost:9999/TaskService/update/3
+
+![Atualizar TaskService](https://github.com/douglasonline/Imagens/blob/master/Atualizar_TaskService.png)
+
+![Atualizando TaskService](https://github.com/douglasonline/Imagens/blob/master/Atualizando_TaskService.png)
+
+![Tela RabbitMQ](https://github.com/douglasonline/Imagens/blob/master/Tela_RabbitMQ.png)
+
+![Email Enviado](https://github.com/douglasonline/Imagens/blob/master/Email_Enviado.png)
    
 
 # 👤 Autor
