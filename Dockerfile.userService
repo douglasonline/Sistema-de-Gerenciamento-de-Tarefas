@@ -1,0 +1,22 @@
+# Fase de build para o UserService
+FROM openjdk:21-ea-23-jdk-slim AS user-service-build
+
+# Definir diretório de trabalho para o UserService
+WORKDIR /app/user
+
+# Copiar o JAR da aplicação UserService para o contêiner
+COPY UserService/target/UserService-0.0.1-SNAPSHOT.jar /app/user/UserService-0.0.1-SNAPSHOT.jar
+
+# Imagem final
+FROM openjdk:21-ea-23-jdk-slim
+
+# Instalar o curl
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+COPY --from=user-service-build /app/user/UserService-0.0.1-SNAPSHOT.jar /app/UserService-0.0.1-SNAPSHOT.jar
+
+# Expor a porta do UserService (definida aleatoriamente)
+EXPOSE 8081
+
+# Comando para iniciar o UserService
+CMD ["sh", "-c", "java -Dserver.port=${PORT:-8081} -jar /app/UserService-0.0.1-SNAPSHOT.jar"]

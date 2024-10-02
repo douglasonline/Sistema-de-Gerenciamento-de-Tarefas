@@ -1,0 +1,22 @@
+# Fase de build para o Notification Service
+FROM openjdk:21-ea-23-jdk-slim AS notification-service-build
+
+# Definir diretório de trabalho para o Notification Service
+WORKDIR /app/notification
+
+# Copiar o JAR da aplicação Notification Service para o contêiner
+COPY Notification/target/Notification-0.0.1-SNAPSHOT.jar /app/notification/Notification-0.0.1-SNAPSHOT.jar
+
+# Imagem final
+FROM openjdk:21-ea-23-jdk-slim
+
+# Instalar o curl
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+COPY --from=notification-service-build /app/notification/Notification-0.0.1-SNAPSHOT.jar /app/Notification-0.0.1-SNAPSHOT.jar
+
+# Expor a porta do Notification Service (definida aleatoriamente)
+EXPOSE 8084
+
+# Comando para iniciar o Notification Service
+CMD ["sh", "-c", "java -Dserver.port=${PORT:-8084} -jar /app/Notification-0.0.1-SNAPSHOT.jar"]

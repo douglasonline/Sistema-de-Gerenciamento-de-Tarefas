@@ -1,0 +1,22 @@
+# Fase de build para o ProjectService
+FROM openjdk:21-ea-23-jdk-slim AS project-service-build
+
+# Definir diretório de trabalho para o ProjectService
+WORKDIR /app/project
+
+# Copiar o JAR da aplicação ProjectService para o contêiner
+COPY ProjectService/target/ProjectService-0.0.1-SNAPSHOT.jar /app/project/ProjectService-0.0.1-SNAPSHOT.jar
+
+# Imagem final
+FROM openjdk:21-ea-23-jdk-slim
+
+# Instalar o curl
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+COPY --from=project-service-build /app/project/ProjectService-0.0.1-SNAPSHOT.jar /app/ProjectService-0.0.1-SNAPSHOT.jar
+
+# Expor a porta do ProjectService (definida aleatoriamente)
+EXPOSE 8082
+
+# Comando para iniciar o ProjectService
+CMD ["sh", "-c", "java -Dserver.port=${PORT:-8082} -jar /app/ProjectService-0.0.1-SNAPSHOT.jar"]

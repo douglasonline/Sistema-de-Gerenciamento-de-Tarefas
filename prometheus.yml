@@ -4,42 +4,17 @@ global:
 scrape_configs:
   # Scrape configuration for Eureka Server
   - job_name: 'eureka-server'
+    metrics_path: /actuator/prometheus  # Adicionando o caminho de métricas
     static_configs:
       - targets: ['eureka:8761']
 
   # Scrape configuration for API Gateway
-  - job_name: 'api-gateway'
+  - job_name: 'gateway'
+    metrics_path: /actuator/prometheus  # Adicionando o caminho de métricas
     static_configs:
-      - targets: ['api-gateway:9999']
+      - targets: ['gateway:9999']
 
-  # Scrape configuration for user-service
-  - job_name: 'user-service'
-    dns_sd_configs:
-      - names:
-          - 'tasks.user-service'
-        type: 'A'
-        port: 8080  # Porta padrão para microm serviços Spring Boot expostos
-
-  # Scrape configuration for project-service
-  - job_name: 'project-service'
-    dns_sd_configs:
-      - names:
-          - 'tasks.project-service'
-        type: 'A'
-        port: 8080
-
-  # Scrape configuration for task-service
-  - job_name: 'task-service'
-    dns_sd_configs:
-      - names:
-          - 'tasks.task-service'
-        type: 'A'
-        port: 8080
-
-  # Scrape configuration for notification-service
-  - job_name: 'notification-service'
-    dns_sd_configs:
-      - names:
-          - 'tasks.notification-service'
-        type: 'A'
-        port: 8080
+  # Scrape configuration for Prometheus (auto-monitoring)
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

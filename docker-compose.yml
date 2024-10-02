@@ -1,39 +1,47 @@
-version: '3.8'
-
 services:
   eureka:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: eureka-build
+      dockerfile: Dockerfile.eureka
     ports:
       - "8761:8761"
     networks:
-      - task_management_network
+      - network_tasks
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   config-server:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: config-build
+      dockerfile: Dockerfile.configServer
     networks:
-      - task_management_network
+      - network_tasks
+    depends_on:
+      - rabbitmq
+      - eureka
+    entrypoint: ["/bin/sh", "-c", "while ! curl -f http://eureka:8761/actuator/health; do sleep 5; done; exec java -jar /app/config-server-0.0.1-SNAPSHOT.jar"]
 
-  api-gateway:
+  gateway:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: gateway-build
+      dockerfile: Dockerfile.gateway
     ports:
       - "9999:9999"
     networks:
-      - task_management_network
+      - network_tasks
+    depends_on:
+      - eureka
+      - config-server
+    entrypoint: ["/bin/sh", "-c", "while ! curl -f http://eureka:8761/actuator/health; do sleep 5; done; exec java -jar /app/gateway-0.0.1-SNAPSHOT.jar"]
+    restart: always  # Adicionando política de reinício
 
   user-service:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: user-service-build
+      dockerfile: Dockerfile.userService
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_user_service:3306/dbTaskManagement
       - SPRING_DATASOURCE_USERNAME=root
@@ -41,13 +49,18 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_PORT=5672
     networks:
-      - task_management_network
+      - network_tasks
+    depends_on:
+      - mysql_user_service
+      - rabbitmq
+      - eureka
+    entrypoint: ["/bin/sh", "-c", "while ! curl -f http://eureka:8761/actuator/health; do sleep 5; done; exec java -jar /app/UserService-0.0.1-SNAPSHOT.jar"]
+    restart: always  # Adicionando política de reinício
 
   project-service:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: project-service-build
+      dockerfile: Dockerfile.projectService
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_project_service:3306/dbTaskManagement
       - SPRING_DATASOURCE_USERNAME=root
@@ -55,13 +68,17 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_PORT=5672
     networks:
-      - task_management_network
+      - network_tasks
+    depends_on:
+      - mysql_project_service
+      - rabbitmq
+      - eureka
+    entrypoint: ["/bin/sh", "-c", "while ! curl -f http://eureka:8761/actuator/health; do sleep 5; done; exec java -jar /app/ProjectService-0.0.1-SNAPSHOT.jar"]
 
   task-service:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: task-service-build
+      dockerfile: Dockerfile.taskService
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_task_service:3306/dbTaskManagement
       - SPRING_DATASOURCE_USERNAME=root
@@ -69,13 +86,17 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_PORT=5672
     networks:
-      - task_management_network
+      - network_tasks
+    depends_on:
+      - mysql_task_service
+      - rabbitmq
+      - eureka
+    entrypoint: ["/bin/sh", "-c", "while ! curl -f http://eureka:8761/actuator/health; do sleep 5; done; exec java -jar /app/TaskService-0.0.1-SNAPSHOT.jar"]
 
   notification-service:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: notification-service-build
+      dockerfile: Dockerfile.notificationService
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_notification_service:3306/dbTaskManagement
       - SPRING_DATASOURCE_USERNAME=root
@@ -83,39 +104,60 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_PORT=5672
     networks:
-      - task_management_network
+      - network_tasks
+    depends_on:
+      - mysql_notification_service
+      - rabbitmq
+      - eureka
+    entrypoint: ["/bin/sh", "-c", "while ! curl -f http://eureka:8761/actuator/health; do sleep 5; done; exec java -jar /app/Notification-0.0.1-SNAPSHOT.jar"]
 
   mysql_user_service:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
       MYSQL_DATABASE: dbTaskManagement
     networks:
-      - task_management_network
+      - network_tasks
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
 
   mysql_project_service:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
       MYSQL_DATABASE: dbTaskManagement
     networks:
-      - task_management_network
+      - network_tasks
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
 
   mysql_task_service:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
       MYSQL_DATABASE: dbTaskManagement
     networks:
-      - task_management_network
+      - network_tasks
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
 
   mysql_notification_service:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
       MYSQL_DATABASE: dbTaskManagement
     networks:
-      - task_management_network
+      - network_tasks
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
 
   rabbitmq:
     image: rabbitmq:management
@@ -123,7 +165,7 @@ services:
       - "5672:5672"  # Porta para comunicação com RabbitMQ
       - "15672:15672"  # Porta para a interface de gerenciamento do RabbitMQ
     networks:
-      - task_management_network
+      - network_tasks
 
   prometheus:
     image: prom/prometheus
@@ -132,15 +174,20 @@ services:
     ports:
       - "9090:9090"
     networks:
-      - task_management_network
+      - network_tasks
 
   grafana:
     image: grafana/grafana
     ports:
       - "3000:3000"
     networks:
-      - task_management_network
+      - network_tasks
+    volumes:
+      - grafana-data:/var/lib/grafana
 
 networks:
-  task_management_network:
+  network_tasks:
     driver: bridge
+
+volumes:
+  grafana-data:

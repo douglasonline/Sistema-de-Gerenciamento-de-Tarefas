@@ -6,9 +6,22 @@
   <component name="ChangeListManager">
     <list default="true" id="5631431f-6c33-476c-ba92-0d26c609b753" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Notification/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Notification/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/UserService/config/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/UserService/config/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/UserService/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/UserService/config/WebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/target/classes/com/example/UserService/config/JwtAuthenticationFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/target/classes/com/example/UserService/config/JwtAuthenticationFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/target/classes/com/example/UserService/config/WebSecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/target/classes/com/example/UserService/config/WebSecurityConfig.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config-server/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config-server/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config-server/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config-server/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prometheus.yml" beforeDir="false" afterPath="$PROJECT_DIR$/prometheus.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +72,8 @@
       <workItem from="1727225298989" duration="1661000" />
       <workItem from="1727651869802" duration="3904000" />
       <workItem from="1727659206524" duration="10451000" />
+      <workItem from="1727824412966" duration="4345000" />
+      <workItem from="1727831964593" duration="6094000" />
     </task>
     <servers />
   </component>

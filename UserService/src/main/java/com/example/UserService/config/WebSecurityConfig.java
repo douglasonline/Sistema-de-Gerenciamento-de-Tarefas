@@ -40,7 +40,8 @@ public class WebSecurityConfig {
                         authorize
                                 .requestMatchers(HttpMethod.POST, "/create").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/auth").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/byid/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/auth").permitAll()
+                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/index.html").permitAll() // Permite acesso ao Swagger UI
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(userDetailsService, secret),

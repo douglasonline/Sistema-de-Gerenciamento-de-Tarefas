@@ -1,0 +1,14 @@
+# Use uma imagem base do OpenJDK 21
+FROM openjdk:21-ea-23-jdk-slim
+
+# Define o diretório de trabalho dentro da imagem
+WORKDIR /app
+
+# Copia o arquivo JAR da sua aplicação Eureka para dentro da imagem
+COPY eureka-server/target/eureka-server-0.0.1-SNAPSHOT.jar /app/eureka-server-0.0.1-SNAPSHOT.jar
+
+# Expõe a porta 8761 para acessar o Eureka Server
+EXPOSE 8761
+
+# Define o comando de inicialização do Eureka Server
+CMD ["java", "-jar", "/app/eureka-server-0.0.1-SNAPSHOT.jar"]
